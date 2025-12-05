@@ -1,4 +1,4 @@
 nome,preco_numerico,desconto_percentual,preco_liquido,avaliacao_percentual,data
-Smartphone X10,,10,,90.0,27-11-2025
-Fone Bluetooth Pro,,5,,78.0,28-11-2025
-Smartwatch Z,,20,,100.0,27-11-2025
+Smartphone X10,1999.99,10,1799.99,90.0,27-11-2025
+Fone Bluetooth Pro,549.5,5,522.02,78.0,28-11-2025
+Smartwatch Z,1250.0,20,1000.0,100.0,27-11-2025

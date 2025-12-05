@@ -1,40 +1,9 @@
 from bs4 import BeautifulSoup
+import requests
 import logging
 import pandas as pd
 import os
 
-
-HTML_DATA = """
-<div class="product-list">
-    <div class="product-card" id="P001" data-date="27/11/2025">
-        <h2>Smartphone X10</h2>
-        <img src="/img/x10.jpg" alt="X10">
-        <p class="price">R$ 1.999,99</p>
-        <span class="rating">4.5/5.0</span>
-        <span class="discount-rate">10% OFF</span>
-    </div>
-    <div class="product-card" id="P002" data-date="28/11/2025">
-        <h2>Notebook Ultraline</h2>
-        <img src="/img/ultra.jpg" alt="Ultra">
-        <p class="price">R$ 4.500,00</p>
-        <span class="rating">4.8/5.0</span>
-        </div>
-    <div class="product-card" id="P003" data-date="28/11/2025">
-        <h2>Fone Bluetooth Pro</h2>
-        <img src="/img/fone.jpg" alt="Fone">
-        <p class="price">R$ 549,50</p>
-        <span class="rating">3.9/5.0</span>
-        <span class="discount-rate">5% OFF</span>
-    </div>
-    <div class="product-card" id="P004" data-date="27/11/2025">
-        <h2>Smartwatch Z</h2>
-        <img src="/img/watch.jpg" alt="Watch">
-        <p class="price">R$ 1.250,00</p>
-        <span class="rating">5.0/5.0</span>
-        <span class="discount-rate">20% OFF</span>
-    </div>
-</div>
-"""
 OUTPUT_CSV = "C://Nuvem//POS//Mineração de Texto na Web//Desafio1//ofertas_calculadas.csv"
 # Definir a pasta onde o log será salvo
 LOG_DIR = "C://Nuvem//POS//Mineração de Texto na Web//Desafio1//" # Exemplo de caminho no Windows 
@@ -52,7 +21,8 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 
 
-def extract_data(url: str) -> list:
+# --- 1. Etapa de Extração ---
+def extracao_dados(url: str) -> list:
 
     lista_produtos=[]
     soup = BeautifulSoup(url, 'html.parser')
@@ -92,8 +62,8 @@ def extract_data(url: str) -> list:
     return lista_produtos
 
 
-# --- 2. Etapa de Transformação (Transform) ---
-def transform_data(data: list) -> pd.DataFrame:
+# --- 2. Etapa de Transformação ---
+def transformacao_dados(data: list) -> pd.DataFrame:
 
     logger.info("Iniciando Transformação de dados.")
 
@@ -105,7 +75,8 @@ def transform_data(data: list) -> pd.DataFrame:
 
     logger.info("Conversão Numérica")
     # Conversão Numérica
-    df['preco'] = df['preco'].str.replace('R$', '', regex=True).str.replace('.', '', regex=False).str.replace(',', '.', regex=False)
+  
+    df['preco'] = df['preco'].str.replace('R$', '', regex=False).str.replace('.', '', regex=False).str.replace(',', '.', regex=False)
     df['preco_numerico'] = pd.to_numeric(df['preco'], errors='coerce').round(2)
     #
     logger.info("Transformando desconto (Ex: 10% OFF) em float (desconto_percentual).")
@@ -130,18 +101,18 @@ def transform_data(data: list) -> pd.DataFrame:
         'nome', 'preco_numerico', 'desconto_percentual', 'preco_liquido', 'avaliacao_percentual','data'
     ]
     # Garante que apenas as colunas existentes sejam selecionadas
-    df_transformed = df[[col for col in final_columns if col in df.columns]]
+    df_transformado = df[[col for col in final_columns if col in df.columns]]
     
     logger.info("Transformação Concluída. DataFrame transformado contém:")
-    logger.info(f"Dimensões: {df_transformed.shape}")
-    logger.info(f"Colunas: {list(df_transformed.columns)}")
+    logger.info(f"Dimensões: {df_transformado.shape}")
+    logger.info(f"Colunas: {list(df_transformado.columns)}")
 
-    return df_transformed 
+    return df_transformado
 
 
-# --- 3. Etapa de Carregamento (Load) ---
-def load_data(df: pd.DataFrame, file_path: str):
-    """Carrega o DataFrame transformado em um arquivo CSV."""
+# --- 3. Etapa de Carregamento ---
+def cerregamento_dados(df: pd.DataFrame, file_path: str):
+  
     logger.info(f"Iniciando Carregamento de dados para o arquivo: {file_path}")
     
     if df.empty:
@@ -156,23 +127,32 @@ def load_data(df: pd.DataFrame, file_path: str):
         logger.error(f"Erro durante o carregamento do CSV: {e}")
 
 
+def ler_html():
+    html_path = r"C:\Nuvem\POS\Mineração de Texto na Web\Desafio1\index.html"
+    if not os.path.exists(html_path):
+        print(f"Arquivo não encontrado: {html_path}")
+        return None
+    with open(html_path, "r", encoding="utf-8") as f:
+        html_content = f.read()
+    return html_content
 
 # --- Execução Principal do Pipeline ---
-def run_etl_pipeline():
+def etl_pipeline():
     logger.info("--- INÍCIO DO PIPELINE ETL ---")
-    
+    HTML_DATA = ler_html()
+        
     # E - Extração
-    produtos = extract_data(HTML_DATA)
+    produtos = extracao_dados(HTML_DATA)
     
     # T - Transformação
-    transformed_df = transform_data(produtos)
+    df_transformado = transformacao_dados(produtos)
     
     # L - Carregamento
-    load_data(transformed_df, OUTPUT_CSV)
+    cerregamento_dados(df_transformado, OUTPUT_CSV)
     
     logger.info("--- FIM DO PIPELINE ETL ---")
 
 # Executar a função principal
 if __name__ == "__main__":
-    run_etl_pipeline()
+    etl_pipeline()
     
