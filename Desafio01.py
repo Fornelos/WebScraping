@@ -6,6 +6,7 @@ from pathlib import Path
 
 NOME_LOG = "etl_pipeline.log"
 NOME_CSV = "ofertas_calculadas.csv"
+HTML_DATA = "index.html"
 # --- Configuração de Caminho ---
 # Garante que o diretório de execução do script seja usado
 diretorio_do_script = Path(__file__).resolve().parent
@@ -140,7 +141,7 @@ def cerregamento_dados(df: pd.DataFrame, file_path: str):
 
 
 def ler_html():
-    html_path = r"C:\Nuvem\POS\Mineração de Texto na Web\Desafio1\index.html"
+    html_path = diretorio_do_script / HTML_DATA
     if not os.path.exists(html_path):
         print(f"Arquivo não encontrado: {html_path}")
         return None

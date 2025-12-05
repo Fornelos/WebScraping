@@ -1,15 +1,15 @@
-2025-12-05 13:57:41,375 - INFO - --- INÍCIO DO PIPELINE ETL ---
-2025-12-05 13:57:41,376 - INFO - Iniciando Extração dos Produtos.
-2025-12-05 13:57:41,376 - WARNING - Produto 'P002' - 'Notebook Ultraline' ignorado por falta da tag desconto.
-2025-12-05 13:57:41,376 - INFO - Iniciando Transformação de dados.
-2025-12-05 13:57:41,376 - INFO - Conversão Numérica
-2025-12-05 13:57:41,379 - INFO - Transformando desconto (Ex: 10% OFF) em float (desconto_percentual).
-2025-12-05 13:57:41,379 - INFO - Normalizando a avaliação para uma escala de 0 a 100 (avaliacao_percentual)
-2025-12-05 13:57:41,379 - INFO - Formatação de Data
-2025-12-05 13:57:41,381 - INFO - Cálculo do preço líquido
-2025-12-05 13:57:41,381 - INFO - Transformação Concluída. DataFrame transformado contém:
-2025-12-05 13:57:41,384 - INFO - Dimensões: (3, 6)
-2025-12-05 13:57:41,384 - INFO - Colunas: ['nome', 'preco_numerico', 'desconto_percentual', 'preco_liquido', 'avaliacao_percentual', 'data']
-2025-12-05 13:57:41,385 - INFO - Iniciando Carregamento de dados para o arquivo: C:\Nuvem\POS\Mineração de Texto na Web\Desafio1\output\ofertas_calculadas.csv
-2025-12-05 13:57:41,388 - INFO - Carregamento Concluído. 3 registros salvos em 'C:\Nuvem\POS\Mineração de Texto na Web\Desafio1\output\ofertas_calculadas.csv'.
-2025-12-05 13:57:41,388 - INFO - --- FIM DO PIPELINE ETL ---
+2025-12-05 14:04:05,692 - INFO - --- INÍCIO DO PIPELINE ETL ---
+2025-12-05 14:04:05,692 - INFO - Iniciando Extração dos Produtos.
+2025-12-05 14:04:05,692 - WARNING - Produto 'P002' - 'Notebook Ultraline' ignorado por falta da tag desconto.
+2025-12-05 14:04:05,692 - INFO - Iniciando Transformação de dados.
+2025-12-05 14:04:05,695 - INFO - Conversão Numérica
+2025-12-05 14:04:05,695 - INFO - Transformando desconto (Ex: 10% OFF) em float (desconto_percentual).
+2025-12-05 14:04:05,695 - INFO - Normalizando a avaliação para uma escala de 0 a 100 (avaliacao_percentual)
+2025-12-05 14:04:05,695 - INFO - Formatação de Data
+2025-12-05 14:04:05,695 - INFO - Cálculo do preço líquido
+2025-12-05 14:04:05,699 - INFO - Transformação Concluída. DataFrame transformado contém:
+2025-12-05 14:04:05,699 - INFO - Dimensões: (3, 6)
+2025-12-05 14:04:05,699 - INFO - Colunas: ['nome', 'preco_numerico', 'desconto_percentual', 'preco_liquido', 'avaliacao_percentual', 'data']
+2025-12-05 14:04:05,699 - INFO - Iniciando Carregamento de dados para o arquivo: C:\Nuvem\POS\Mineração de Texto na Web\Desafio1\output\ofertas_calculadas.csv
+2025-12-05 14:04:05,702 - INFO - Carregamento Concluído. 3 registros salvos em 'C:\Nuvem\POS\Mineração de Texto na Web\Desafio1\output\ofertas_calculadas.csv'.
+2025-12-05 14:04:05,704 - INFO - --- FIM DO PIPELINE ETL ---
