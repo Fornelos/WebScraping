@@ -1,21 +1,33 @@
 from bs4 import BeautifulSoup
-import requests
 import logging
 import pandas as pd
 import os
+from pathlib import Path
 
-OUTPUT_CSV = "C://Nuvem//POS//Mineração de Texto na Web//Desafio1//ofertas_calculadas.csv"
-# Definir a pasta onde o log será salvo
-LOG_DIR = "C://Nuvem//POS//Mineração de Texto na Web//Desafio1//" # Exemplo de caminho no Windows 
- # Caminho completo do arquivo de log
-LOG_FILE_PATH = os.path.join(LOG_DIR, "etl_pipeline.log")
+NOME_LOG = "etl_pipeline.log"
+NOME_CSV = "ofertas_calculadas.csv"
+# --- Configuração de Caminho ---
+# Garante que o diretório de execução do script seja usado
+diretorio_do_script = Path(__file__).resolve().parent
+
+#Definir o caminho completo da nova pasta
+output_path = diretorio_do_script / "output"
+
+# Criar a pasta se ela não existir
+# parents=True: Cria quaisquer diretórios pai que não existam (se output_path fosse 'pasta_a/output')
+# exist_ok=True: Não levanta um erro se o diretório já existir (o que você quer)
+output_path.mkdir(parents=True, exist_ok=True)
+
+# Caminhos completos para os arquivos
+log_file_path = output_path / NOME_LOG
+csv_file_path = output_path / NOME_CSV
 
 
 # --- Configuração do Logging ---
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     handlers=[
-                        logging.FileHandler(LOG_FILE_PATH),
+                        logging.FileHandler(log_file_path),
                         logging.StreamHandler()
                     ])
 logger = logging.getLogger(__name__)
@@ -148,7 +160,7 @@ def etl_pipeline():
     df_transformado = transformacao_dados(produtos)
     
     # L - Carregamento
-    cerregamento_dados(df_transformado, OUTPUT_CSV)
+    cerregamento_dados(df_transformado, csv_file_path)
     
     logger.info("--- FIM DO PIPELINE ETL ---")
 
